@@ -16,7 +16,8 @@ MainWindow::~MainWindow()
 void MainWindow::on_pushButton_clicked()
 {
     QVariantMap args;
-    args.insert("user_ids","53141740");
-    VKRequest req("users.get", args);
-    VkQt::execute(&req);
+    args.insert("user_ids","210700286");
+    VKRequest req;
+            req = VkQt::instance()->users()->get(args);
+    VkQt::instance()->execute(&req);
 }
