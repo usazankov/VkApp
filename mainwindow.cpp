@@ -13,11 +13,24 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::printJson(const QJsonObject &obj)
+{
+    QJsonArray jsonArray = obj["response"].toArray();
+    foreach (const QJsonValue & value, jsonArray)
+    {
+        QJsonObject obj = value.toObject();
+        qDebug()<<obj["first_name"].toString();
+        qDebug()<<obj["last_name"].toString();
+        qDebug()<<obj["uid"].toInt();
+    }
+}
+
 void MainWindow::on_pushButton_clicked()
 {
     QVariantMap args;
-    args.insert("user_ids","210700286");
+    args.insert("user_ids","5796477");
     VKRequest req;
             req = VkQt::instance()->users()->get(args);
-    VkQt::instance()->execute(&req);
+    auto reply = VkQt::instance()->execute(&req);
+    connect(reply, SIGNAL(resultReady(QJsonObject)), this, SLOT(printJson(QJsonObject)));
 }
